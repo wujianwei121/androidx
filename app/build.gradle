@@ -1,0 +1,93 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.jakewharton.butterknife'
+android {
+    signingConfigs {
+        relealse {
+            keyAlias 'key0'
+            keyPassword '111111'
+            storePassword '111111'
+            storeFile file("$rootDir/testkey.jks")
+        }
+    }
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+    defaultConfig {
+        applicationId "com.user.kaoguan"
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+    buildTypes {
+        debug {
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            minifyEnabled false
+            zipAlignEnabled true
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.relealse
+        }
+
+        release {
+            minifyEnabled false
+            zipAlignEnabled true
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            signingConfig signingConfigs.relealse
+        }
+    }
+    flavorDimensions "type" //这个是必须的
+    productFlavors {
+        server_test {
+            manifestPlaceholders = [channel: "test"]
+            buildConfigField "int", "SERVER_TYPE", "1"
+            dimension "type"  //并且必须使用这个dimension
+        }
+        server_online {
+            manifestPlaceholders = [channel: "online"]
+            buildConfigField "int", "SERVER_TYPE", "2"
+            dimension "type"  //并且必须使用这个dimension
+        }
+    }
+    dexOptions {
+        preDexLibraries = false
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                def fileName
+                def versionName
+                def versionCode
+                if (variant.productFlavors[0].versionName != null) {
+                    versionName = variant.productFlavors[0].versionName
+                    versionCode = variant.productFlavors[0].versionCode
+                } else {
+                    versionName = defaultConfig.versionName
+                    versionCode = defaultConfig.versionCode
+                }
+                fileName = "${defaultConfig.applicationId}_${versionName}_${versionCode}_${variant.productFlavors[0].name}.apk"
+                outputFileName = fileName
+            }
+        }
+    }
+    lintOptions {
+        disable 'GoogleAppIndexingWarning'
+    }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
+    implementation 'com.jakewharton:butterknife:10.2.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
+    implementation project(':framwork')
+
+}

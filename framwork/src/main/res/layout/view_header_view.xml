@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/ll_match_parent_horizontal"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/tv_hint"
+        style="@style/tv_default_match_next"
+        android:layout_centerVertical="true"
+        android:text="头像" />
+
+    <ImageView
+        android:id="@+id/iv_cus_header"
+        android:layout_width="@dimen/space_45"
+        android:layout_height="@dimen/space_45"
+        android:layout_marginRight="@dimen/space_15"
+        app:srcCompat="@drawable/ic_circle_header" />
+
+</RelativeLayout>
