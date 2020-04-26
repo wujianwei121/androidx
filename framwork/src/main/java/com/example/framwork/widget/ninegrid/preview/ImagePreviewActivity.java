@@ -13,16 +13,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.framwork.R;
+import com.example.framwork.utils.StatusBarUtil;
 import com.example.framwork.widget.ninegrid.ImageInfo;
 
 import java.util.List;
 
 import xyz.zpayh.hdimage.HDImageView;
 
-public class ImagePreviewActivity extends AppCompatActivity implements ViewTreeObserver.OnPreDrawListener {
+public class ImagePreviewActivity extends AppCompatActivity implements ViewTreeObserver.OnPreDrawListener, ImagePreviewAdapter.OnItemImageClickListener {
 
     public static final String IMAGE_INFO = "IMAGE_INFO";
     public static final String CURRENT_ITEM = "CURRENT_ITEM";
@@ -42,12 +44,11 @@ public class ImagePreviewActivity extends AppCompatActivity implements ViewTreeO
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StatusBarUtil.setColor(this, ContextCompat.getColor(this, R.color.black), 0);
         setContentView(R.layout.activity_preview);
-
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        final TextView tv_pager = (TextView) findViewById(R.id.tv_pager);
-        rootView = (RelativeLayout) findViewById(R.id.rootView);
-
+        ViewPager viewPager = findViewById(R.id.viewPager);
+        final TextView tv_pager = findViewById(R.id.tv_pager);
+        rootView = findViewById(R.id.rootView);
         DisplayMetrics metric = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metric);
         screenWidth = metric.widthPixels;
@@ -57,7 +58,7 @@ public class ImagePreviewActivity extends AppCompatActivity implements ViewTreeO
         imageInfo = (List<ImageInfo>) intent.getSerializableExtra(IMAGE_INFO);
         currentItem = intent.getIntExtra(CURRENT_ITEM, 0);
 
-        imagePreviewAdapter = new ImagePreviewAdapter(this, imageInfo);
+        imagePreviewAdapter = new ImagePreviewAdapter(this, imageInfo, this);
         viewPager.setAdapter(imagePreviewAdapter);
         viewPager.setCurrentItem(currentItem);
         viewPager.getViewTreeObserver().addOnPreDrawListener(this);
@@ -254,5 +255,10 @@ public class ImagePreviewActivity extends AppCompatActivity implements ViewTreeO
         if (imagePreviewAdapter != null && imagePreviewAdapter.getPrimaryImageView() != null)
             imagePreviewAdapter.getPrimaryImageView().recycle();
         super.onDestroy();
+    }
+
+    @Override
+    public void imageClick() {
+        finishActivityAnim();
     }
 }
