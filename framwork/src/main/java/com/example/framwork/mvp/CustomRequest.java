@@ -132,13 +132,15 @@ public class CustomRequest<Entity> {
             public void onSucceed(int what, String response) {
                 DLog.d(TAG, methodName + "原始出参：" + response);
                 if (!TextUtils.isEmpty(response.trim())) {
-                    BaseResponseBean bean;
-                    if (getConfig().isEncryption()) {
-                        String responseS = EncryptUtil.getInstance().decodeValue(response);
-                        DLog.d(TAG, methodName + "解密出参：" + responseS);
-                    }
                     try {
-                        bean = (BaseResponseBean) BaseResponseBean.parseObj(response, getConfig().getReponseC());
+                        BaseResponseBean bean;
+                        if (getConfig().isEncryption()) {
+                            String responseS = EncryptUtil.getInstance().decodeValue(response);
+                            DLog.d(TAG, methodName + "解密出参：" + responseS);
+                            bean = (BaseResponseBean) BaseResponseBean.parseObj(responseS, getConfig().getReponseC());
+                        } else {
+                            bean = (BaseResponseBean) BaseResponseBean.parseObj(response, getConfig().getReponseC());
+                        }
                         if (bean.isSuccess()) {
                             if (clazz == null) {
                                 requestListener.requestSuccess(bean);

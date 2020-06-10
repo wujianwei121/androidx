@@ -113,25 +113,22 @@ public class CustomHeaderView extends RelativeLayout {
                 // 进入相册 以下是例子：用不到的api可以不写
                 PictureSelector.create(mActivity)
                         .openGallery(PictureMimeType.ofImage())//全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()
-                        .loadImageEngine(GlideEngine.createGlideEngine()).theme(com.example.framwork.R.style.picture_default_style)//主题样式(不设置为默认样式) 也可参考demo values/styles下 例如：R.style.picture.white.style
+                        .imageEngine(GlideEngine.createGlideEngine())
                         .imageSpanCount(4)// 每行显示个数 int
                         .selectionMode(PictureConfig.SINGLE)// 多选 or 单选 PictureConfig.MULTIPLE or PictureConfig.SINGLE
-                        .previewImage(true)// 是否可预览图片 true or false
                         .isCamera(true)// 是否显示拍照按钮 true or false
                         .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
-                        .glideOverride(160, 160)// glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
                         .isGif(false)// 是否显示gif图片 true or false
-                        .openClickSound(false)// 是否开启点击声音 true or false
                         .withAspectRatio(1, 1)
                         .showCropFrame(true)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false   true or false
                         .circleDimmedLayer(false)
-                        .enableCrop(true)
+                        .isEnableCrop(true)
                         .isDragFrame(true)
                         .scaleEnabled(true)
                         .rotateEnabled(false)
-                        .compress(true)
+                        .isCompress(true)
                         .freeStyleCropEnabled(true)
-                        .previewEggs(true)// 预览图片时 是否增强左右滑动图片体验(图片滑动一半即可看到上一张是否选中) true or false
+                        .isPreviewEggs(true)// 预览图片时 是否增强左右滑动图片体验(图片滑动一半即可看到上一张是否选中) true or false
                         .forResult(SELECT_HEADER_CODE);//结果回调onActivityResult code
             }
         });

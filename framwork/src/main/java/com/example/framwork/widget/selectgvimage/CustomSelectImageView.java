@@ -136,21 +136,18 @@ public class CustomSelectImageView extends LinearLayout implements UpdateImageAd
                         // 进入相册 以下是例子：用不到的api可以不写
                         PictureSelector.create(mActivity)
                                 .openGallery(PictureMimeType.ofImage())//全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()
-                                .loadImageEngine(GlideEngine.createGlideEngine()).theme(R.style.picture_default_style)//主题样式(不设置为默认样式) 也可参考demo values/styles下 例如：R.style.picture.white.style
+                                .imageEngine(GlideEngine.createGlideEngine())
                                 .maxSelectNum(maxPhoto - selectImageList.size())// 最大图片选择数量 int
                                 .imageSpanCount(4)// 每行显示个数 int
                                 .selectionMode(selectMode)// 多选 or 单选 PictureConfig.MULTIPLE or PictureConfig.SINGLE
-                                .previewImage(true)// 是否可预览图片 true or false
                                 .isCamera(true)// 是否显示拍照按钮 true or false
                                 .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
-                                .enableCrop(isCrop)
+                                .isEnableCrop(isCrop)
                                 .withAspectRatio(aspect_ratio_x, aspect_ratio_y)
-                                .glideOverride(160, 160)// glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
                                 .isGif(false)// 是否显示gif图片 true or false
-                                .openClickSound(false)// 是否开启点击声音 true or false
                                 .minimumCompressSize(100)// 小于100kb的图片不压缩
-                                .previewEggs(true)// 预览图片时 是否增强左右滑动图片体验(图片滑动一半即可看到上一张是否选中) true or false
-                                .compress(true)// 是否压缩
+                                .isPreviewEggs(true)// 预览图片时 是否增强左右滑动图片体验(图片滑动一半即可看到上一张是否选中) true or false
+                                .isCamera(true)// 是否压缩
                                 .forResult(requestCode);//结果回调onActivityResult code
                     }
                 } else {

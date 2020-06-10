@@ -64,7 +64,7 @@ dependencies {
     //pop窗口
     api 'com.github.zyyoona7:EasyPopup:1.1.2'
     //相册选择
-    api 'com.github.LuckSiege.PictureSelector:picture_library:v2.4.6'
+    api 'com.github.LuckSiege.PictureSelector:picture_library:v2.5.8'
     api 'jp.wasabeef:glide-transformations:3.3.0'
     api 'com.google.zxing:core:3.3.0'
     api 'com.yanzhenjie:permission:2.0.3'
