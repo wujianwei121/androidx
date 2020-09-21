@@ -1,4 +1,4 @@
-package com.user.kaoguan.ui.Mine;
+package com.user.kaoguan.ui.mine;
 
 import android.os.Bundle;
 import android.view.View;

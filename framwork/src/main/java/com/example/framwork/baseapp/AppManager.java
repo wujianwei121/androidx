@@ -210,4 +210,10 @@ public class AppManager {
             }
         }
     }
+
+    public void clearAll() {
+        if (activityStack != null) {
+            activityStack.clear();
+        }
+    }
 }

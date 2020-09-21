@@ -51,7 +51,7 @@ public class PermissionUtil {
     }
 
     public void requestPermission(final AppCompatActivity activity, final IPermissionsCallBck permissionsCallBck, @PermissionDef String... permissions) {
-        AndPermission.with(activity.getApplicationContext())
+        AndPermission.with(activity)
                 .runtime()
                 .permission(permissions)
                 .rationale(new DefaultRationale())
@@ -69,7 +69,7 @@ public class PermissionUtil {
                         if (permissionsCallBck != null)
                             permissionsCallBck.premissionsCallback(false);
                         if (AndPermission.hasAlwaysDeniedPermission(activity, permissions)) {
-                            showSetting(activity.getApplicationContext(), permissions);
+                            showSetting(activity, permissions);
                         }
                     }
                 })

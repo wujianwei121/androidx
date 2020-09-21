@@ -143,9 +143,10 @@ public class CustomSelectImageView extends LinearLayout implements UpdateImageAd
                                 .isCamera(true)// 是否显示拍照按钮 true or false
                                 .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
                                 .isEnableCrop(isCrop)
+                                .isCompress(true)
                                 .withAspectRatio(aspect_ratio_x, aspect_ratio_y)
                                 .isGif(false)// 是否显示gif图片 true or false
-                                .minimumCompressSize(100)// 小于100kb的图片不压缩
+                                .minimumCompressSize(500)// 小于500kb的图片不压缩
                                 .isPreviewEggs(true)// 预览图片时 是否增强左右滑动图片体验(图片滑动一半即可看到上一张是否选中) true or false
                                 .isCamera(true)// 是否压缩
                                 .forResult(requestCode);//结果回调onActivityResult code
@@ -182,10 +183,16 @@ public class CustomSelectImageView extends LinearLayout implements UpdateImageAd
                 for (int i = 0; i < pathList.size(); i++) {
                     LocalMedia localMedia = pathList.get(i);
                     UpdatePhotoInfo photoInfo = new UpdatePhotoInfo();
-                    if (localMedia.isCompressed())
+                    if (localMedia.isCompressed()) {
                         photoInfo.localPath = localMedia.getCompressPath();
-                    else
-                        photoInfo.localPath = localMedia.getPath();
+                    } else {
+                        int version = android.os.Build.VERSION.SDK_INT;
+                        if (version >= 29) {
+                            photoInfo.localPath = localMedia.getAndroidQToPath();
+                        } else {
+                            photoInfo.localPath = localMedia.getPath();
+                        }
+                    }
                     photoInfo.photoSize = (int) (FileUtil.getInstance().getFileSizeL(mActivity, photoInfo.localPath) / 1024);
                     if (photoInfo.photoSize == 0) {
                         Toasty.warning(mActivity, "所选图片已损坏").show();

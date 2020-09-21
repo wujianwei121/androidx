@@ -142,8 +142,14 @@ public class CustomHeaderView extends RelativeLayout {
                 UpdatePhotoInfo photoInfo = new UpdatePhotoInfo();
                 if (localMedia.isCut())
                     photoInfo.localPath = localMedia.getCutPath();
-                else
-                    photoInfo.localPath = localMedia.getPath();
+                else {
+                    int version = android.os.Build.VERSION.SDK_INT;
+                    if (version >= 29) {
+                        photoInfo.localPath = localMedia.getAndroidQToPath();
+                    } else {
+                        photoInfo.localPath = localMedia.getPath();
+                    }
+                }
                 photoInfo.photoSize = (int) (FileUtil.getInstance().getFileSizeL(mActivity, photoInfo.localPath) / 1024);
                 if (photoInfo.photoSize == 0) {
                     Toasty.warning(mActivity, "所选图片已损坏");

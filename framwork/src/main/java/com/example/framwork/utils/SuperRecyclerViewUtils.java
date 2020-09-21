@@ -110,6 +110,7 @@ public class SuperRecyclerViewUtils implements OnRefreshLoadMoreListener,
         if (loadDataLayout != null) {
             loadDataLayout.setReloadBtnTextColor(R.color.gray_9b);
             mLoadDataUtils = new LoadDataLayoutUtils(loadDataLayout, this);
+            mLoadDataUtils.showLoading("拼命加载中");
         }
         if (mRefreshLayout != null) {
             mRefreshLayout.setOnRefreshLoadMoreListener(this);
@@ -263,8 +264,14 @@ public class SuperRecyclerViewUtils implements OnRefreshLoadMoreListener,
         return this;
     }
 
+    public SuperRecyclerViewUtils refresh() {
+        onRefresh(mRefreshLayout);
+        return this;
+    }
+
     public void logout() {
-        mLoadDataUtils.showNoLogin("登录已过期,请重新登录~", loginBtnTextColor, loginBtnBg);
+        if (mLoadDataUtils != null)
+            mLoadDataUtils.showNoLogin("登录已过期,请重新登录~", loginBtnTextColor, loginBtnBg);
     }
 
     /**
@@ -301,7 +308,7 @@ public class SuperRecyclerViewUtils implements OnRefreshLoadMoreListener,
             //如果加载更多失败，page页回退
             mPage--;
         }
-        if (mLoadDataUtils != null) {
+        if (mLoadDataUtils != null && isShowEmpty) {
             if (exception != null && (exception instanceof NetworkError || exception instanceof TimeoutError)) {
                 mLoadDataUtils.showNoWifiError(error);
             } else if (CustomRequest.getConfig().getFilter() != null && CustomRequest.getConfig().getFilter().logoutOfDate(bean, errorCode)) {
@@ -312,6 +319,7 @@ public class SuperRecyclerViewUtils implements OnRefreshLoadMoreListener,
         }
 
     }
+
 
     private void onInitGreenDaoList(List<Object> list) {
         if (mRecyclerView.getAdapter() == null) {
@@ -351,7 +359,7 @@ public class SuperRecyclerViewUtils implements OnRefreshLoadMoreListener,
                 mAdapter.notifyDataSetChanged();
             }
         }
-        mCallBack.onFinish(baseBean);
+        mCallBack.onFinish(mPage, baseBean);
     }
 
     private void onSuccessArray(List<Object> list) {
@@ -455,8 +463,11 @@ public class SuperRecyclerViewUtils implements OnRefreshLoadMoreListener,
         /**
          * 渲染完成后
          */
-        public void onFinish(Object o) {
+        public void onFinish(int page, Object o) {
 
+        }
+
+        public void onReturnData(Object o) {
         }
 
     }
@@ -488,6 +499,7 @@ public class SuperRecyclerViewUtils implements OnRefreshLoadMoreListener,
                         }
                         baseBean = (BaseListBean) bean.parseObject(mRecyclerViewUtils.mCallBack.onConvertClass());
                     }
+                    mRecyclerViewUtils.mCallBack.onReturnData(baseBean);
                     mRecyclerViewUtils.onSuccess(baseBean);
                 } else {
                     List<Object> baseBean = (List<Object>) mRecyclerViewUtils.mCallBack.onConvertData(bean);
@@ -497,8 +509,10 @@ public class SuperRecyclerViewUtils implements OnRefreshLoadMoreListener,
                             return;
                         }
                         List<Object> list = bean.parseList(mRecyclerViewUtils.mCallBack.onConvertClass());
+                        mRecyclerViewUtils.mCallBack.onReturnData(list);
                         mRecyclerViewUtils.onSuccessArray(list);
                     } else {
+                        mRecyclerViewUtils.mCallBack.onReturnData(baseBean);
                         mRecyclerViewUtils.onSuccessArray(baseBean);
                     }
                 }

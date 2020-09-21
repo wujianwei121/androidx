@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.framwork.mvp.BasePresenter;
 import com.user.kaoguan.R;
-import com.user.kaoguan.ui.Mine.MineFragment;
+import com.user.kaoguan.ui.mine.MineFragment;
 import com.user.kaoguan.ui.home.HomeFragment;
 
 public class MainPresenter extends BasePresenter {

@@ -18,7 +18,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bumptech.glide.request.target.ImageViewTarget;
 import com.example.framwork.R;
 import com.luck.picture.lib.engine.ImageEngine;
-import com.luck.picture.lib.listener.ImageCompleteCallback;
+import com.luck.picture.lib.listener.OnImageCompleteCallback;
 import com.luck.picture.lib.tools.MediaUtils;
 import com.luck.picture.lib.widget.longimage.ImageSource;
 import com.luck.picture.lib.widget.longimage.ImageViewState;
@@ -58,7 +58,7 @@ public class GlideEngine implements ImageEngine {
     @Override
     public void loadImage(@NonNull Context context, @NonNull String url,
                           @NonNull final ImageView imageView,
-                          final SubsamplingScaleImageView longImageView, final ImageCompleteCallback callback) {
+                          final SubsamplingScaleImageView longImageView, final OnImageCompleteCallback callback) {
         Glide.with(context)
                 .asBitmap()
                 .load(url)

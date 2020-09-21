@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+
 import androidx.core.content.ContextCompat;
+
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -91,9 +93,19 @@ public class CommonTitle extends AutoTitle {
         left_res.setVisibility(VISIBLE);
         left_res.setImageResource(resid);
     }
+
     public void setConterTextColor(int resid) {
-        center_txt.setTextColor(ContextCompat.getColor(mContext,resid));
+        center_txt.setTextColor(ContextCompat.getColor(mContext, resid));
     }
+
+    public void setLeftTextColor(int resid) {
+        left_txt.setTextColor(ContextCompat.getColor(mContext, resid));
+    }
+
+    public void setRightTextColor(int resid) {
+        right_txt.setTextColor(ContextCompat.getColor(mContext, resid));
+    }
+
     public TextView getLeftText() {
         return left_txt;
     }
